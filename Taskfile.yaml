@@ -1,0 +1,26 @@
+version: 3
+
+tasks:
+  init:
+    desc: Init Traefix conf
+    cmds:
+      - |
+        if ! docker network inspect traefik > /dev/null 2>&1; then
+          docker network create traefik
+        fi
+      - |
+        if [ ! -e ./acme.json ]; then
+          touch ./acme.json
+          chmod 600 ./acme.json
+        fi
+    silent: true
+
+  start:
+    desc: Start Traefik reverse proxy
+    cmd: docker compose up -d
+    silent: true
+
+  stop:
+    desc: Stop Traefik reverse proxy
+    cmd: docker compose down
+    silent: true
